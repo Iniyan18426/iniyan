@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - PupAid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-container {
+            background: white;
+            padding: 3em;
+            border-radius: 2em;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 2em;
+        }
+
+        .logo h1 {
+            background: linear-gradient(90deg, cyan, magenta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 1.5em;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #333;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1em;
+            border: 2px solid #e3f2fd;
+            border-radius: 1em;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0d47a1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(13,71,161,0.1);
+        }
+
+        .register-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0d47a1, #6a1b9a);
+            color: white;
+            border: none;
+            padding: 1.2em;
+            border-radius: 1em;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1em;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(13,71,161,0.3);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1em;
+            border-radius: 0.8em;
+            margin-top: 1em;
+            display: none;
+            border-left: 4px solid #f44336;
+        }
+
+        .success-message {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 1em;
+            border-radius: 0.8em;
+            margin-top: 1em;
+            display: none;
+            border-left: 4px solid #4caf50;
+        }
+
+        .loading-spinner {
+            display: none;
+            margin: 1em auto;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0d47a1;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .additional-options {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1em;
+            margin-top: 2em;
+            font-size: 0.9em;
+        }
+
+        .additional-options a {
+            color: #0d47a1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .additional-options a:hover {
+            color: #6a1b9a;
+            text-decoration: underline;
+        }
+
+        .divider {
+            color: #ccc;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <h1>PupAid</h1>
+            <p>Create Your Account</p>
+        </div>
+
+        <form id="register-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Create a password (min. 6 characters)">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your password">
+            </div>
+
+            <button type="submit" class="register-btn" id="register-btn">
+                <span id="btn-text">Create Account</span>
+            </button>
+        </form>
+
+        <div class="loading-spinner" id="loading-spinner">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+
+        <div class="additional-options">
+            <a href="/login" class="login-link">Already have an account? Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('register-form');
+        const registerBtn = document.getElementById('register-btn');
+        const btnText = document.getElementById('btn-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm_password').value.trim();
+
+            if (!email || !password || !confirmPassword) {
+                showError('Please fill in all fields.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match.');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long.');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address.');
+                return;
+            }
+
+            registerBtn.disabled = true;
+            btnText.innerHTML = '⏳ Creating Account...';
+            loadingSpinner.style.display = 'block';
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password, confirm_password: confirmPassword })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.success) {
+                        showSuccess('Account created successfully! Redirecting...');
+                        setTimeout(() => {
+                            if (data.hasDogInfo) {
+                                window.location.href = '/';
+                            } else {
+                                window.location.href = '/dog-info';
+                            }
+                        }, 1200);
+                    } else {
+                        showError(data.error || 'Registration failed. Please try again.');
+                    }
+                } else {
+                    showError(data.error || 'Registration failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                registerBtn.disabled = false;
+                btnText.innerHTML = 'Create Account';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+        }
+
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        window.addEventListener('load', function() {
+            document.getElementById('email').focus();
+        });
+    </script>
+</body>
+</html>
