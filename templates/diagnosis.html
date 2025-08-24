@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>PupAid - Diagnosis</title>
+</head>
+<body>
+  <h1>Image Diagnosis</h1>
+  <p>Upload an image to analyze.</p>
+  <form id="uploadForm" enctype="multipart/form-data" method="post" action="/analyze">
+    <input type="file" name="file" accept="image/*" required />
+    <button type="submit">Analyze</button>
+  </form>
+</body>
+</html>

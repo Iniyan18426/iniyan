@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>PupAid - Text Diagnosis</title>
+</head>
+<body>
+  <h1>Text Diagnosis</h1>
+  <p>Describe your dog's symptoms below.</p>
+  <form id="textForm">
+    <textarea id="query" rows="6" cols="60" placeholder="e.g., intense itching, redness on ears"></textarea>
+    <br>
+    <button type="submit">Search</button>
+  </form>
+  <pre id="result"></pre>
+  <script>
+    document.getElementById('textForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = document.getElementById('query').value.trim();
+      const res = await fetch('/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      });
+      const data = await res.json();
+      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
