@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Snake Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="wrapper">
+    <h1 class="title">Snake</h1>
+
+    <section class="hud" aria-live="polite">
+      <div class="scores">
+        <span class="label">Score</span>
+        <span id="score">0</span>
+        <span class="divider">|</span>
+        <span class="label">Best</span>
+        <span id="highscore">0</span>
+      </div>
+      <div class="controls">
+        <button id="pause-btn" aria-pressed="false">Pause</button>
+        <button id="restart-btn">Restart</button>
+      </div>
+    </section>
+
+    <section class="board">
+      <canvas id="game" width="576" height="576" aria-label="Snake game board" role="img"></canvas>
+      <div id="overlay" class="overlay hidden" aria-hidden="true">
+        <div id="overlay-text"></div>
+      </div>
+    </section>
+
+    <section class="help">
+      <p>
+        Controls: Arrow Keys or WASD to move. Space to pause/resume. R to restart.
+      </p>
+    </section>
+  </main>
+  <script src="./main.js"></script>
+</body>
+</html>
