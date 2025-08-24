@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PupAid - Dog Info</title>
+</head>
+<body>
+  <h1>Enter Dog Information</h1>
+  <form id="dog-form">
+    <label>Name <input id="dog_name" required></label><br>
+    <label>Breed <input id="dog_breed" required></label><br>
+    <label>Age (years) <input id="dog_age" type="number" min="0" max="25" required></label><br>
+    <label>Weight (lbs) <input id="dog_weight" type="number" min="1" max="200" required></label><br>
+    <button type="submit">Save</button>
+  </form>
+  <div id="msg"></div>
+  <script>
+    document.getElementById('dog-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        dog_name: document.getElementById('dog_name').value.trim(),
+        dog_breed: document.getElementById('dog_breed').value.trim(),
+        dog_age: Number(document.getElementById('dog_age').value),
+        dog_weight: Number(document.getElementById('dog_weight').value),
+      };
+      const res = await fetch('/save-dog-info', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const data = await res.json();
+      document.getElementById('msg').textContent = data.success ? 'Saved! Go to home.' : (data.error || 'Failed');
+    });
+  </script>
+</body>
+</html>
