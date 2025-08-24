@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Snake</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app">
+    <h1 class="title">Snake</h1>
+    <div class="hud">
+      <div class="score">Score: <span id="score">0</span></div>
+      <div class="high-score">High: <span id="highScore">0</span></div>
+      <div class="controls">
+        <button id="pauseBtn" aria-label="Pause or resume">Pause</button>
+        <button id="restartBtn" aria-label="Restart">Restart</button>
+      </div>
+    </div>
+
+    <div class="board-wrapper">
+      <canvas id="game" width="480" height="480"></canvas>
+      <div id="overlay" class="overlay hidden">
+        <div id="overlayText"></div>
+        <div class="overlay-sub">Press Arrow Keys / WASD. P to pause, R to restart.</div>
+      </div>
+    </div>
+
+    <div class="touch">
+      <div class="row">
+        <button class="btn" data-dir="up" aria-label="Up">▲</button>
+      </div>
+      <div class="row">
+        <button class="btn" data-dir="left" aria-label="Left">◀</button>
+        <button class="btn" data-dir="down" aria-label="Down">▼</button>
+        <button class="btn" data-dir="right" aria-label="Right">▶</button>
+      </div>
+      <div class="row">
+        <button class="btn sec" id="touchPause">Pause</button>
+        <button class="btn sec" id="touchRestart">Restart</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./main.js"></script>
+</body>
+</html>
